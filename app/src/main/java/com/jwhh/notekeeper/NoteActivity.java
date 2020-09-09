@@ -1,11 +1,17 @@
 package com.jwhh.notekeeper;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Spinner;
+import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import com.jwhh.notekeeper.model.CourseInfo;
 
 public class NoteActivity extends AppCompatActivity {
     public static final String NOTE_POSITION = "com.jwhh.notekeeper.NOTE_POSITION";
@@ -34,10 +40,34 @@ public class NoteActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_send_mail) {
+            sendEmail();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void sendEmail() {
+        Spinner spinnerCourses = findViewById(R.id.spinner_courses);
+        TextView textNoteTitle = findViewById(R.id.text_note_title);
+        TextView textNoteText = findViewById(R.id.text_note_text);
+
+        CourseInfo course = (CourseInfo) spinnerCourses.getSelectedItem();
+
+        String subject = textNoteTitle.getText().toString();
+        String text = "Checkout what I learned in the Pluralsight course \"" +
+                course.getTitle() + "\"\n" + textNoteText.getText();
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("message/rfc2822");
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(Intent.EXTRA_TEXT, text);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
