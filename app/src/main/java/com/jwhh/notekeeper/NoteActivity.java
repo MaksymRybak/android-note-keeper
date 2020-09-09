@@ -8,7 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class NoteActivity extends AppCompatActivity {
-    public static final String NOTE_INFO = "com.jwhh.notekeeper.NOTE_INFO";
+    public static final String NOTE_POSITION = "com.jwhh.notekeeper.NOTE_POSITION";
+    public static final int POSITION_NOT_SET = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

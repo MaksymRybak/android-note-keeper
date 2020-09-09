@@ -63,7 +63,11 @@ public class FirstFragment extends Fragment {
 
     private void readDisplayStateValues() {
         Intent intent = getActivity().getIntent();
-        note = intent.getParcelableExtra(NoteActivity.NOTE_INFO);
-        isNewNote = note == null;
+//        note = intent.getParcelableExtra(NoteActivity.NOTE_POSITION);
+        int position = intent.getIntExtra(NoteActivity.NOTE_POSITION, NoteActivity.POSITION_NOT_SET);
+        isNewNote = position == NoteActivity.POSITION_NOT_SET;
+        if (!isNewNote) {
+            note = DataManager.getInstance().getNotes().get(position);
+        }
     }
 }
