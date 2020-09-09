@@ -1,5 +1,6 @@
 package com.jwhh.notekeeper;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import java.util.List;
 public class FirstFragment extends Fragment {
 
     private NoteInfo note;
+    private boolean isNewNote;
 
     @Override
     public View onCreateView(
@@ -45,7 +47,9 @@ public class FirstFragment extends Fragment {
         EditText textNoteTitle = view.findViewById(R.id.text_note_title);
         EditText textNoteText = view.findViewById(R.id.text_note_text);
 
-        displayNote(spinnerCourses, textNoteTitle, textNoteText);
+        if (!isNewNote) {
+            displayNote(spinnerCourses, textNoteTitle, textNoteText);
+        }
     }
 
     private void displayNote(Spinner spinnerCourses, EditText textNoteTitle, EditText textNoteText) {
@@ -58,6 +62,8 @@ public class FirstFragment extends Fragment {
     }
 
     private void readDisplayStateValues() {
-        note = (NoteInfo)getActivity().getIntent().getExtras().get(NoteActivity.NOTE_INFO);
+        Intent intent = getActivity().getIntent();
+        note = intent.getParcelableExtra(NoteActivity.NOTE_INFO);
+        isNewNote = note == null;
     }
 }
