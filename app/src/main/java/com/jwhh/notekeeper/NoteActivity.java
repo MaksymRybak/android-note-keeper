@@ -1,25 +1,14 @@
 package com.jwhh.notekeeper;
 
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.jwhh.notekeeper.model.CourseInfo;
-import com.jwhh.notekeeper.model.DataManager;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.View;
-
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-
-import java.util.List;
-
 public class NoteActivity extends AppCompatActivity {
+    public static final String NOTE_INFO = "com.jwhh.notekeeper.NOTE_INFO";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
