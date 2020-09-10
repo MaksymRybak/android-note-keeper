@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -47,6 +48,12 @@ public class NoteActivity extends AppCompatActivity {
         ViewModelProvider viewModelProvider = new ViewModelProvider(getViewModelStore(),
                 ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()));
         viewModel = viewModelProvider.get(NoteActivityViewModel.class);
+
+        if (viewModel.getNewlyCreated() && savedInstanceState != null) {
+            viewModel.restoreState(savedInstanceState);
+        }
+
+        viewModel.setNewlyCreated(false);
 
         readDisplayStateValues();
         saveOriginalNoteValues();
@@ -171,5 +178,13 @@ public class NoteActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (outState != null) {
+            viewModel.saveState(outState);
+        }
     }
 }
