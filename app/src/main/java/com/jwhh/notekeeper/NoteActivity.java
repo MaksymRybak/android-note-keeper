@@ -12,10 +12,12 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.jwhh.notekeeper.model.CourseInfo;
 import com.jwhh.notekeeper.model.DataManager;
 import com.jwhh.notekeeper.model.NoteInfo;
+import com.jwhh.notekeeper.viewmodel.NoteActivityViewModel;
 
 import java.util.List;
 
@@ -32,9 +34,8 @@ public class NoteActivity extends AppCompatActivity {
     private boolean isNewNote;
 
     private boolean isCanceling;
-    private String originalNoteCourseId;
-    private String originalNoteTitle;
-    private String originalNoteText;
+
+    private NoteActivityViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,10 @@ public class NoteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_note);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ViewModelProvider viewModelProvider = new ViewModelProvider(getViewModelStore(),
+                ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()));
+        viewModel = viewModelProvider.get(NoteActivityViewModel.class);
 
         readDisplayStateValues();
         saveOriginalNoteValues();
@@ -64,9 +69,9 @@ public class NoteActivity extends AppCompatActivity {
         if (isNewNote)
             return;
 
-        originalNoteCourseId = note.getCourse().getCourseId();
-        originalNoteTitle = note.getTitle();
-        originalNoteText = note.getText();
+        viewModel.setOriginalNoteCourseId(note.getCourse().getCourseId());
+        viewModel.setOriginalNoteTitle(note.getTitle());
+        viewModel.setOriginalNoteText(note.getText());
     }
 
     @Override
@@ -84,10 +89,10 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     private void storePreviousNoteValue() {
-        CourseInfo course = DataManager.getInstance().getCourse(originalNoteCourseId);
+        CourseInfo course = DataManager.getInstance().getCourse(viewModel.getOriginalNoteCourseId());
         note.setCourse(course);
-        note.setTitle(originalNoteTitle);
-        note.setText(originalNoteText);
+        note.setTitle(viewModel.getOriginalNoteTitle());
+        note.setText(viewModel.getOriginalNoteText());
     }
 
     private void displayNote(Spinner spinnerCourses, EditText textNoteTitle, EditText textNoteText) {
